@@ -104,7 +104,11 @@
             >
                 {{ $t('connecting') }}
             </div>
-            <div class="kiwi-header-name">{{ buffer.getNetwork().name }}</div>
+            <div class="kiwi-header-name">{{ buffer.getNetwork().name }}
+                <button type="button" @click="toggleEditNetwork">Edit Network</button>
+                <input v-if="editNetwork" v-model="newNetworkName" type="text"
+                       style="display:inline;">
+            </div>
         </template>
 
         <template v-else-if="isQuery()">
@@ -187,6 +191,8 @@ export default {
             prompts: {
                 closeChannel: false,
             },
+            editNetwork: false,
+            newNetworkName: '',
         };
     },
     computed: {
@@ -208,6 +214,9 @@ export default {
         buffer: function watchBuffer() {
             // When ever the buffer changes, close the settings dropdown
             this.buffer_settings_open = false;
+        },
+        newNetworkName() {
+            state.$emit('newNetworkName', this.newNetworkName);
         },
     },
     created() {
@@ -265,6 +274,9 @@ export default {
                 state.addBuffer(this.buffer.networkid, channelName);
                 network.ircClient.join(channelName);
             }
+        },
+        toggleEditNetwork() {
+            this.editNetwork = !this.editNetwork;
         },
     },
 };

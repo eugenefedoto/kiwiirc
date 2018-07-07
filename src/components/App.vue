@@ -297,6 +297,9 @@ export default {
         if (this.uiState.canPin && state.getSetting('settings.sidebarPinned')) {
             this.uiState.pin();
         }
+        state.$on('newNetworkName', (newNetworkName) => {
+            this.network.name = newNetworkName;
+        });
     },
     mounted: function mounted() {
         // Decide which startup screen to use depending on the config
